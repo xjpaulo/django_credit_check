@@ -29,13 +29,18 @@ class Results(APIView):
         elif result.status == 'PENDING':
             response = Response({
                 'ticket_id': ticket,
-                'result': 'The credit check is enqueued, please try again later.'
+                'result': 'The credit check is enqueued or ticket does not exist, please try again later.'
             }, status=status.HTTP_200_OK)
         elif result.status == 'STARTED':
             response = Response({
                 'ticket_id': ticket,
                 'result': 'The credit is being checked right now, please try again in a few seconds.'
             }, status=status.HTTP_200_OK)
+        elif result.status == 'FAILURE':
+            response = Response({
+                'ticket_id': ticket,
+                'result': 'There was a failure in the credit check.'
+            })
         else:
             response = Response({
                 'status': result.state,
