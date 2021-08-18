@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class CreditCheck(APIView):
     def post(self, request, *args, **kwargs):
-        logger.debug('Received POST request.')
+        logger.debug(f'Received POST request: {request.data}')
         serializer = CreditCheckSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -25,7 +25,7 @@ class CreditCheck(APIView):
 
 class Results(APIView):
     def get(self, request, ticket, *args, **kwargs):
-        logger.debug('Received GET request.')
+        logger.debug(f'Received GET request for ticket {ticket}')
         result = AsyncResult(str(ticket))
         if result.status == 'SUCCESS':
             response = Response({
@@ -33,25 +33,31 @@ class Results(APIView):
                 'result': result.get()
             }, status=status.HTTP_200_OK)
             result.revoke(terminate=True)
+            logger.debug(f'Returned message for ticket {ticket}: {result.get()}')
         elif result.status == 'PENDING':
             response = Response({
                 'ticket_id': ticket,
                 'result': 'The credit check task is enqueued or ticket does not exist.'
             }, status=status.HTTP_200_OK)
+            logger.debug(f'Returned message for ticket {ticket}:'
+                         f'The credit check task is enqueued or ticket does not exist.')
         elif result.status == 'STARTED':
             response = Response({
                 'ticket_id': ticket,
                 'result': 'The credit is being checked right now, please try again in a few seconds.'
             }, status=status.HTTP_200_OK)
+            logger.debug(f'Returned message for ticket {ticket}:'
+                         f'The credit is being checked right now, please try again in a few seconds.')
         elif result.status == 'FAILURE':
             response = Response({
                 'ticket_id': ticket,
                 'result': 'There was a failure in the credit check.'
             })
+            logger.debug(f'Returned message for ticket {ticket}: There was a failure in the credit check.')
         else:
             response = Response({
                 'status': result.state,
                 'ticket_id': ticket,
             })
-        logger.debug(f'Result after checking task status: {response}')
+            logger.debug(f'Returned message for ticket {ticket}: {result.state}')
         return response
