@@ -1,9 +1,9 @@
 import json
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APISimpleTestCase
 
 
-class CreditTestCase(APITestCase):
+class CreditTestCase(APISimpleTestCase):
     def setUp(self):
         self.credit_check_url = '/api/v1/credit/'
 
