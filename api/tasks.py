@@ -9,7 +9,7 @@ logger_celery = get_task_logger(__name__)
 
 @shared_task(soft_time_limit=50, time_limit=60)
 def validate_credit(user_age, credit_value):
-    logger_celery.info('Validation task started.')
+    logger_celery.info(f'Validation task started: user_age: {user_age}, credit_value: {credit_value}')
     try:
         time.sleep(40)
         message_return = detailed_log = ''

@@ -14,4 +14,6 @@ class CreditTestCase(APISimpleTestCase):
         }
         response = self.client.post(self.credit_check_url, data=valid_credit_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        print(response)
+        print(response.data[0])
 

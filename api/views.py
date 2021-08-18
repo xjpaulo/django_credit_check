@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class CreditCheck(APIView):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         logger.debug(f'Received POST request: {request.data}')
         serializer = CreditCheckSerializer(data=request.data)
 
@@ -24,7 +24,7 @@ class CreditCheck(APIView):
 
 
 class Results(APIView):
-    def get(self, request, ticket, *args, **kwargs):
+    def get(self, request, ticket):
         logger.debug(f'Received GET request for ticket {ticket}')
         result = AsyncResult(str(ticket))
         if result.status == 'SUCCESS':
