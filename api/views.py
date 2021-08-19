@@ -30,6 +30,7 @@ class Results(APIView):
         if result.status == 'SUCCESS':
             response = Response({
                 'ticket_id': ticket,
+                'ticket_status': result.status,
                 'result': result.get()
             }, status=status.HTTP_200_OK)
             result.revoke(terminate=True)
@@ -37,6 +38,7 @@ class Results(APIView):
         elif result.status == 'PENDING':
             response = Response({
                 'ticket_id': ticket,
+                'ticket_status': result.status,
                 'result': 'The credit check task is enqueued or ticket does not exist.'
             }, status=status.HTTP_200_OK)
             logger.debug(f'Returned message for ticket {ticket}:'
@@ -44,6 +46,7 @@ class Results(APIView):
         elif result.status == 'STARTED':
             response = Response({
                 'ticket_id': ticket,
+                'ticket_status': result.status,
                 'result': 'The credit is being checked right now, please try again in a few seconds.'
             }, status=status.HTTP_200_OK)
             logger.debug(f'Returned message for ticket {ticket}:'
@@ -51,12 +54,13 @@ class Results(APIView):
         elif result.status == 'FAILURE':
             response = Response({
                 'ticket_id': ticket,
+                'ticket_status': result.status,
                 'result': 'There was a failure in the credit check.'
             })
             logger.debug(f'Returned message for ticket {ticket}: There was a failure in the credit check.')
         else:
             response = Response({
-                'status': result.state,
+                'status': result.status,
                 'ticket_id': ticket,
             })
             logger.debug(f'Returned message for ticket {ticket}: {result.state}')
