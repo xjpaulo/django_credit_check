@@ -28,3 +28,4 @@ def validate_credit(user_age, credit_value):
         message_return = 'An error occurred when running the validation task.'
         logger_celery.warning(f'Validation task aborted due to SoftTimeLimitExceeded.')
     return message_return
+

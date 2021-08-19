@@ -66,3 +66,4 @@ class Results(APIView):
             logger.debug(f'Returned message for ticket {ticket}: {result.state}')
         return response
 
+
