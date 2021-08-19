@@ -24,7 +24,7 @@ class CreditCheck(APIView):
             validation_queue = validate_credit.delay(serializer.validated_data['user_age'],
                                                      serializer.validated_data['credit_value'])
             logger.debug(f'Task for validation created. Ticket id: {validation_queue.id}')
-            return Response({'ticket_id': validation_queue.id})
+            return Response({'ticket_id': validation_queue.id}, status=status.HTTP_201_CREATED)
         logger.error(f'Error when serializing: {serializer.errors}')
         return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -54,7 +54,7 @@ class Results(APIView):
                 'ticket_id': ticket,
                 'ticket_status': result.status,
                 'result': 'The credit is being checked right now, please try again in a few seconds.'
-            }, status=status.HTTP_200_OK)
+            }, status=status.HTTP_202_ACCEPTED)
             logger.debug(f'Returned message for ticket {ticket}:'
                          f'The credit is being checked right now, please try again in a few seconds.')
         elif result.status == 'FAILURE':
@@ -62,7 +62,7 @@ class Results(APIView):
                 'ticket_id': ticket,
                 'ticket_status': result.status,
                 'result': 'There was a failure in the credit check.'
-            })
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             logger.debug(f'Returned message for ticket {ticket}: There was a failure in the credit check.')
         else:
             response = Response({

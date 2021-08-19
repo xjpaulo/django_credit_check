@@ -23,22 +23,28 @@ class CreditTestCase(APISimpleTestCase):
         response = self.client.post(self.credit_check_url, data=self.valid_credit_data)
         content = json.loads(response.content)
         ticket_id = content["ticket_id"]
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         assert ticket_id
 
         response = self.client.get(reverse("results", args=[ticket_id]))
         content = json.loads(response.content)
         if content["ticket_status"] == "STARTED":
-            assert content == {'ticket_id': ticket_id, 'ticket_status': 'STARTED', 'result': 'The credit is being checked right now, please try again in a few seconds.'}
+            assert content == {'ticket_id': ticket_id, 'ticket_status': 'STARTED',
+                               'result': 'The credit is being checked right now, please try again in a few seconds.'}
         if content["ticket_status"] == "PENDING":
-            assert content == {'ticket_id': ticket_id, 'ticket_status': 'PENDING', 'result': 'The credit check task is enqueued or ticket does not exist.'}
-        if content["ticket_status"] == "FAILURE":
-            assert content == {'ticket_id': ticket_id, 'ticket_status': 'FAILURE', 'result': 'There was a failure in the credit check.'}
-        while content["ticket_status"] != "SUCCESS":
+            assert content == {'ticket_id': ticket_id, 'ticket_status': 'PENDING',
+                               'result': 'The credit check task is enqueued or ticket does not exist.'}
+        while content["ticket_status"] != "SUCCESS" or content["ticket_status"] != "FAILURE":
             response = self.client.get(reverse("results", args=[ticket_id]))
             content = json.loads(response.content)
-        assert content == {'ticket_id': ticket_id, 'ticket_status': 'SUCCESS', 'result': 'Credit approved: All values match the requirements.'}
-        assert response.status_code == 200
+            if content["ticket_status"] == "SUCCESS":
+                assert content == {'ticket_id': ticket_id, 'ticket_status': 'SUCCESS',
+                                   'result': 'Credit approved: All values match the requirements.'}
+                assert response.status_code == 200
+            if content["ticket_status"] == "FAILURE":
+                assert content == {'ticket_id': ticket_id, 'ticket_status': 'FAILURE',
+                                   'result': 'There was a failure in the credit check.'}
+                assert response.status_code == 500
 
     def test_serializer(self):
         serializer = CreditCheckSerializer()
