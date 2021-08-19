@@ -1,4 +1,4 @@
-# play-by-weather
+# django-credit-check
 
 A REST API responsible to perform credit validation based on age and credit amount value provided. The API returns a ticket that could be accessed later to check whether the user is eligible for credit or not. It was developed using Python, Django Rest Framework, Celery and Redis.
 
