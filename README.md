@@ -49,6 +49,8 @@ JSON Payload: {"user_age": <user_age>, "credit_value": <credit_value>}
 GET localhost:8080/api/v1/credit-check/tickets/<ticket>/
 ```
 
+As the Django's DEBUG property is set to True, these endpoints can be accessed through a web browser.
+
 **Tasks:**
 
 Tasks will be tracked by Flower accessing the following URL:
