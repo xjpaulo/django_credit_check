@@ -34,7 +34,7 @@ class CreditTestCase(APISimpleTestCase):
         if content["ticket_status"] == "PENDING":
             assert content == {'ticket_id': ticket_id, 'ticket_status': 'PENDING',
                                'result': 'The credit check task is enqueued or ticket does not exist.'}
-        while content["ticket_status"] != "SUCCESS" or content["ticket_status"] != "FAILURE":
+        while content["ticket_status"] not in ["SUCCESS", "FAILURE"]:
             response = self.client.get(reverse("results", args=[ticket_id]))
             content = json.loads(response.content)
             if content["ticket_status"] == "SUCCESS":
