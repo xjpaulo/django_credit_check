@@ -40,13 +40,13 @@ The API will be available through the endpoints below:
 
  - Credit check:
 ```
-POST localhost:8080/api/v1/credit-check/
+POST localhost:8000/api/v1/credit-check/
 
 JSON Payload: {"user_age": <user_age>, "credit_value": <credit_value>}
 ```
  - Check results using a ticket:
 ``` 
-GET localhost:8080/api/v1/credit-check/tickets/<ticket>/
+GET localhost:8000/api/v1/credit-check/tickets/<ticket>/
 ```
 
 As the Django's DEBUG property is set to True, these endpoints can be accessed through a web browser.
