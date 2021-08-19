@@ -17,17 +17,24 @@ A ticket will be returned when requesting credit validation. A task resposible f
  - [docker-compose](https://docs.docker.com/compose/)
  - [redis](https://redis.io/)
 
+It's recommended to use some Linux distribution as OS.
+
 ## Configuration
 To start the application, run docker-compose in the root directory:
 ```
-$ docker-compose up --detach --build
+$ sudo docker-compose up --detach --build
 ```
 Logs can be followed by the command:  
 ```
-$ docker-compose logs --follow
+$ sudo docker-compose logs --follow
 ```
 ## Operation
-After the configuration, the API will be available through the endpoints below:
+After the configuration, run the tests in order to check if everything is running fine:
+```
+$ sudo docker exec -it django_credit_check_web_1 python manage.py test
+```
+
+The API will be available through the endpoints below
 
 **Endpoints:**
 
@@ -42,3 +49,9 @@ JSON Payload: {"user_age": <user_age>, "credit_value": <credit_value>}
 GET localhost:8080/api/v1/credit-check/tickets/<ticket>/
 ```
 
+**Tasks:**
+
+Tasks can be monitored through Flower accessing the following URL:
+```
+http://localhost:5555
+```
