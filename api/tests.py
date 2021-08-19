@@ -1,9 +1,7 @@
-import json
 from rest_framework import status
 from rest_framework.test import APISimpleTestCase
 import logging
 from .serializers import CreditCheckSerializer
-from .tasks import validate_credit
 from django.urls import reverse
 import json
 
