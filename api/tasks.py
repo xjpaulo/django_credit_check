@@ -11,7 +11,8 @@ logger_celery = get_task_logger(__name__)
 def validate_credit(user_age, credit_value):
     logger_celery.info(f'Validation task started: user_age: {user_age}, credit_value: {credit_value}')
     try:
-        time.sleep(40)
+        #Uncomment the line below for testing purposes -- it may takes 20 seconds to finish the task
+        #time.sleep(20)
         message_return = detailed_log = ''
         if user_age >= 18 and credit_value < 100000:
             detailed_log = f'Credit approved: Age {user_age} is >= 18 and credit value {credit_value} is < 100000.00'

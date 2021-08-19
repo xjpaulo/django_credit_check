@@ -12,8 +12,7 @@ logger = logging.getLogger(__name__)
 class CreditTestCase(APISimpleTestCase):
     def setUp(self):
         logging.disable(logging.DEBUG)
-        self.credit_check_url = '/api/v1/credit/'
-        self.results_url = '/api/v1/results/'
+        self.credit_check_url = '/api/v1/credit-check/'
         self.valid_credit_data = {
                 'user_age': 19,
                 'credit_value': 50000
@@ -33,6 +32,8 @@ class CreditTestCase(APISimpleTestCase):
             assert content == {'ticket_id': ticket_id, 'ticket_status': 'STARTED', 'result': 'The credit is being checked right now, please try again in a few seconds.'}
         if content["ticket_status"] == "PENDING":
             assert content == {'ticket_id': ticket_id, 'ticket_status': 'PENDING', 'result': 'The credit check task is enqueued or ticket does not exist.'}
+        if content["ticket_status"] == "FAILURE":
+            assert content == {'ticket_id': ticket_id, 'ticket_status': 'FAILURE', 'result': 'There was a failure in the credit check.'}
         while content["ticket_status"] != "SUCCESS":
             response = self.client.get(reverse("results", args=[ticket_id]))
             content = json.loads(response.content)
