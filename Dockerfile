@@ -1,4 +1,4 @@
-FROM python:3.9.6
+FROM python:3.8.10
 
 WORKDIR /django-credit-check
 COPY . /django-credit-check
