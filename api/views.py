@@ -4,9 +4,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import CreditCheckSerializer
 from .tasks import validate_credit
+from rest_framework.decorators import api_view
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+@api_view(['GET'])
+def api_root(request):
+    return Response({'error': 'Please use a valid endpoint.'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class CreditCheck(APIView):
@@ -20,7 +26,7 @@ class CreditCheck(APIView):
             logger.debug(f'Task for validation created. Ticket id: {validation_queue.id}')
             return Response({'ticket_id': validation_queue.id})
         logger.error(f'Error when serializing: {serializer.errors}')
-        return Response({'errors': serializer.errors})
+        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class Results(APIView):
