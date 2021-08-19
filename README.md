@@ -58,4 +58,4 @@ Tasks will be tracked by Flower accessing the following URL:
 http://localhost:5555
 ```
 
-The processing time of the validation task can be modified uncommenting the line 15 in the file [tasks.py](https://github.com/xjpaulo/django_credit_check/blob/main/api/tasks.py) and setting the time value in seconds.
+For testing purposes, the processing time of the validation task can be modified uncommenting the line 15 in the file [tasks.py](https://github.com/xjpaulo/django_credit_check/blob/main/api/tasks.py) and setting the time value in seconds.
