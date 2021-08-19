@@ -34,7 +34,7 @@ After the configuration, run the tests in order to check if everything is runnin
 $ sudo docker exec -it django_credit_check_web_1 python manage.py test
 ```
 
-The API will be available through the endpoints below
+The API will be available through the endpoints below:
 
 **Endpoints:**
 
@@ -51,7 +51,7 @@ GET localhost:8080/api/v1/credit-check/tickets/<ticket>/
 
 **Tasks:**
 
-Tasks can be monitored through Flower accessing the following URL:
+Tasks will be tracked by Flower accessing the following URL:
 ```
 http://localhost:5555
 ```
