@@ -6,7 +6,7 @@ A REST API responsible to perform credit validation based on age and credit amou
 
 The API receives a payload containing the user's age and credit amount:
 - Case the user's age is greater than or equal to 18, and the credit amount requested is less than 100000, then the credit should be approved.
-- Case the user's age is less than 18, or the credit amount requested is greater than 100000, then the credit should be rejected.
+- Case the user's age is less than 18, or the credit amount requested is greater than or equal to 100000, then the credit should be rejected.
 
 A ticket will be returned when requesting credit validation. A task resposible for the validation will run in the background or be queued. The user can verify the status of the validation providing the ticket through one of the endpoints available.
 
